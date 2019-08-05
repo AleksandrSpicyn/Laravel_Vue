@@ -15,7 +15,8 @@ class CategoryController extends Controller
      *
      */
     private $rules = [
-        'name' => 'required|string'
+        'name' => 'required|string',
+        'parent_id' => 'integer|exists:categories,id',
     ];
 
     /**
@@ -71,11 +72,19 @@ class CategoryController extends Controller
         $this->validate($request, $this->rules);
         $name = $request->name;
         try {
-            Category::create(
+            $category = Category::create(
                 [
                     'name' => $name
                 ]
             );
+            if($request->parent_id){
+                $parent = Category::where('id', $request->parent_id)->first();
+                $category->makeChildOf($parent);
+            }
+            else{
+                $category->parent_id = null;
+                $category->save();
+            }
             return response()->json(['ok'], 200);
         } catch (\Exception $e) {
             return response(['message' => 'Create error', 'errors' => [$e->getMessage()]], 422);
@@ -97,6 +106,13 @@ class CategoryController extends Controller
         try {
             $category = Category::findOrFail($id);
             $category->name = $request->name;
+            if($request->parent_id){
+                $parent = Category::where('id', $request->parent_id)->first();
+                $category->makeChildOf($parent);
+            }
+            else{
+                $category->parent_id = null;
+            }
             $category->save();
             return response()->json(['ok'], 200);
         } catch (\Exception $e) {
