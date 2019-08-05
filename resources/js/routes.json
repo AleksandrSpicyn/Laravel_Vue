@@ -1,0 +1,13 @@
+{
+    "products.index": "api\/v0\/products",
+    "products.store": "api\/v0\/products",
+    "products.show": "api\/v0\/products\/{product}",
+    "products.update": "api\/v0\/products\/{product}",
+    "products.destroy": "api\/v0\/products\/{product}",
+    "categories.index": "api\/v0\/categories",
+    "categories.store": "api\/v0\/categories",
+    "categories.show": "api\/v0\/categories\/{category}",
+    "categories.update": "api\/v0\/categories\/{category}",
+    "categories.destroy": "api\/v0\/categories\/{category}",
+    "home": "\/"
+}
